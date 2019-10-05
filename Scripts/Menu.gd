@@ -4,16 +4,20 @@ onready var file_dialog_player= $FileDialogPlayer
 onready var file_dialog_boss= $FileDialogBoss
 
 func _ready():
-	if(Global.readMain()):
+	if(Global.read_main()):
+		Global.load_config()
+		Global.set_colors(self)
+		get_parent().color=Global.background_colors[0]
+		get_parent().get_node("background1").modulate=Global.background_colors[1]
+		get_parent().get_node("background2").modulate=Global.background_colors[2]
 		$InitiliseConfig.visible=true
 		var file = File.new()
 		if file.file_exists(Global.config_path):
 			show_settings()
-	$Title.visible= Global.config.get_value("config_stuff","show_title", false)
+	get_parent().get_node("Title").visible= Global.config.get_value("config_stuff","show_title", false)
 			
 func _input(event):
 	if event.is_action_pressed("RELOAD")&& !Global.config.get_value("config_stuff","disallow_reload_with_F5",true):
-		Global.resize()
 		get_tree().reload_current_scene()
 		
 func show_settings():
