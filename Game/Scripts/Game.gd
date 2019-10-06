@@ -1,6 +1,6 @@
 extends Control
 var t1=["The","A"]
-var t2=["most ","somewhat ","least ","","","greatest "]
+var t2=["most ","least ","",""]
 var t3=["different","important","popular","basic","difficult","known","useful","mental",
 		"emotional","political","unhealthy","significant","cute","expensive","successful",
 		"poor","helpful","recent","impossible","legal","dangerous","famous"]
@@ -28,6 +28,7 @@ func _input(event):
 func _ready():
 	Global.load_config()
 	Global.set_colors(self)
+	$ColorRect.color=Global.background_colors[0]
 	$ColorRect/background1.modulate=Global.background_colors[1]
 	$ColorRect/background2.modulate=Global.background_colors[2]
 	rng.randomize()
@@ -37,8 +38,8 @@ func _ready():
 		get_node("Player/PlayerName").text=String(Global.player_name.hash())
 		get_node("Boss/BossName").text=String(Global.boss_name.hash())
 	else:
-		get_node("Player/Border/PlayerName").text=Global.player_name		
-		get_node("Boss/Border/BossName").text=Global.boss_name
+		get_node("Player/PlayerName").text=Global.player_name		
+		get_node("Boss/BossName").text=Global.boss_name
 	generate_title()
 	var f= ConfigFile.new()
 	var err= f.load(Global.boss_path)
@@ -85,7 +86,12 @@ func roll():
 	var a=0
 	var b=0
 	var t=Timer.new()
-	t.set_wait_time(0.5)
+	var w=Global.config.get_value("config_stuff","calculation_delay",0.5)
+	if(w<=0):
+		w=0.2
+	elif (w>2):
+		w=2
+	t.set_wait_time(w)
 	self.add_child(t)
 	t.start()
 	var tmp 
@@ -101,6 +107,7 @@ func roll():
 			boss_dice[b].texture=dice_images[tmp]
 			b+=1	
 		yield(t,"timeout")
+	Global.rolling=false
 	resolve(player_roll,boss_roll)
 	
 func resolve(var player_roll, var boss_roll):
@@ -113,19 +120,21 @@ func resolve(var player_roll, var boss_roll):
 		if(boss_roll[i]==3):
 			boss_dice[i].modulate=Color.green
 			dem = max(dem-2,0)
-	$Boss/game/health.value-=dem
-	print("Player did damage: "+String(dem))
-	if($Boss/game/health.value<=0):
-		score()
+	if(boss_defeatable):
+		$Boss/game/health.value-=dem
+		print("Player did sword damage: "+String(dem))
+		if($Boss/game/health.value<=0):
+			score()
 	dem=0
 	for i in range(0,player_roll.size()):
 		if player_roll[i]==2:
 			player_dice[i].modulate=Color.red
 			dem+=1
-	$Boss/game/health.value-=dem
-	print("Player did Magic damage: "+String(dem))
-	if($Boss/game/health.value<=0):
-		score()
+	if(boss_defeatable):
+		$Boss/game/health.value-=dem
+		print("Player did club damage: "+String(dem))
+		if($Boss/game/health.value<=0):
+			score()
 	dem=0
 	for i in range(0,boss_roll.size()):
 		if boss_roll[i]==1:
@@ -136,7 +145,7 @@ func resolve(var player_roll, var boss_roll):
 			player_dice[i].modulate=Color.green
 			dem = max(dem-2,0)
 	$Player/game/health.value-=dem
-	print("Boss did damage: "+String(dem))
+	print("Boss did sword damage: "+String(dem))
 	if($Player/game/health.value<=0):
 		lose()
 	dem=0
@@ -145,10 +154,12 @@ func resolve(var player_roll, var boss_roll):
 			boss_dice[i].modulate=Color.red
 			dem+=1	
 	$Player/game/health.value-=dem
-	print("Boss did Magic damage: "+String(dem))	
+	print("Boss did club damage: "+String(dem))	
 	if($Player/game/health.value<=0):
-		lose()		
-			
+		lose()
+	
+		
+	
 func generate_title():
 	var title=""
 	title+= t1[rng.randi_range(0,t1.size()-1)]
@@ -171,21 +182,18 @@ func generate_title():
 	$Title.text=title			
 	
 
-
 func _on_Roll_button_down():
-	print("pressed")
-	if($Player/game/Roll.disabled):
+	if(Global.rolling):
 		return
-	print("rolled")
-	$Player/game/Roll.disabled=true
+	Global.rolling=true
 	reset_dice()
 	roll()
-	$Player/game/Roll.disabled=false
 	
 func lose():
 	$ColorRect/Lost.popup()
 	
 func score():
+	$Player/game/Roll.disabled=true
 	var score=20000
 	if(player_add_damage>0):
 		score+=2500
@@ -205,6 +213,10 @@ func score():
 	if(Global.background_colors[0]!=def_color && Global.background_colors[1]!=def_color 
 			&&Global.background_colors[2]!=def_color):
 		score+=31918
+	def_color=Color("#3F47CC")
+	if(Global.background_colors[0]==def_color || Global.background_colors[1]==def_color 
+			||Global.background_colors[2]==def_color):
+		score+=2918	
 	if(Global.config.get_value("config_stuff","disallow_reload_with_F5",true)):
 		score-=7780
 	if(!Global.config.get_value("config_stuff","portrait",true)):
@@ -214,6 +226,22 @@ func score():
 	var time = OS.get_unix_time()-Global.start_time
 	score -=(time*2)
 	$ColorRect/Highscore.text="Score: "+String(score)
+	yield(get_tree(), "idle_frame")
+	var date=OS.get_datetime()
+	var name="screenshot_"
+	name+=String(date["year"])
+	name+=String(date["month"])
+	name+=String(date["day"])
+	name+=String(date["hour"])
+	name+=String(date["minute"])
+	name+=String(date["second"])
+	name+=".png"
+	var image = get_viewport().get_texture().get_data()
+	image.flip_y()
+	image.save_png(Global.path+name)
+	$ColorRect/Fireworks.visible=true
+	$ColorRect/Fireworks.playing=true
+	$ColorRect/Won.popup()
 
 
 func _on_Lost_confirmed():

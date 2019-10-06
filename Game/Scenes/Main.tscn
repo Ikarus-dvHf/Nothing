@@ -56,15 +56,17 @@ theme = ExtResource( 5 )
 script = ExtResource( 6 )
 
 [node name="InitiliseConfig" type="Button" parent="ColorRect/Menu"]
-margin_right = 277.0
+visible = false
+margin_right = 400.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 152, 0 )
 text = "Generate config file"
 script = ExtResource( 7 )
 
 [node name="Control" type="Control" parent="ColorRect/Menu"]
+visible = false
 margin_top = 24.0
-margin_right = 277.0
+margin_right = 400.0
 margin_bottom = 24.0
 
 [node name="PlayerLabel" type="Label" parent="ColorRect/Menu/Control"]
@@ -131,34 +133,41 @@ margin_bottom = 24.0
 text = "Start Game"
 
 [node name="FileDialogPlayer" type="FileDialog" parent="ColorRect/Menu"]
+margin_top = 24.0
 margin_right = 400.0
-margin_bottom = 300.0
+margin_bottom = 324.0
 rect_min_size = Vector2( 400, 300 )
 window_title = "Open a File"
 resizable = true
 mode = 0
+access = 2
 filters = PoolStringArray( "*.png; PNG Images" )
+current_dir = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game"
+current_path = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game/"
 
 [node name="FileDialogBoss" type="FileDialog" parent="ColorRect/Menu"]
-margin_top = 304.0
+margin_top = 24.0
 margin_right = 400.0
-margin_bottom = 604.0
+margin_bottom = 324.0
 rect_min_size = Vector2( 400, 300 )
 window_title = "Open a File"
 resizable = true
 mode = 0
+access = 2
 filters = PoolStringArray( "*.png; PNG Images" )
+current_dir = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game"
+current_path = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game/"
 
 [node name="FileNotFound" type="AcceptDialog" parent="ColorRect/Menu"]
 margin_right = 429.0
 margin_bottom = 75.0
 window_title = "File not found"
 dialog_text = "Unable to locate
- C:\\Users\\Ikarus-dvHf\\Github\\tafg\\files\\Boss.cfg"
+ C:\\Users\\Ikarus-dvHf\\Github\\The-almost-finished-Game\\files\\Boss.cfg"
 
 [connection signal="button_down" from="ColorRect/Menu/InitiliseConfig" to="ColorRect/Menu/InitiliseConfig" method="_on_Initilise_config_button_down"]
 [connection signal="button_down" from="ColorRect/Menu/Control/Player/PlayerImage" to="ColorRect/Menu" method="_on_PlayerImage_button_down"]
 [connection signal="button_down" from="ColorRect/Menu/Control/Boss/BossImage" to="ColorRect/Menu" method="_on_BossImage_button_down"]
 [connection signal="button_down" from="ColorRect/Menu/Control/Start/Start" to="ColorRect/Menu" method="_on_Start_button_down"]
 [connection signal="file_selected" from="ColorRect/Menu/FileDialogPlayer" to="ColorRect/Menu" method="_on_FileDialogPlayer_file_selected"]
-[connection signal="dir_selected" from="ColorRect/Menu/FileDialogBoss" to="ColorRect/Menu" method="_on_FileDialogBoss_dir_selected"]
+[connection signal="file_selected" from="ColorRect/Menu/FileDialogBoss" to="ColorRect/Menu" method="_on_FileDialogBoss_file_selected"]

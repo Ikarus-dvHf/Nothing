@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Theme/default_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=2]
@@ -8,12 +8,36 @@
 [ext_resource path="res://files/Defend.png" type="Texture" id=6]
 [ext_resource path="res://files/Background2.png" type="Texture" id=7]
 [ext_resource path="res://files/Background3.png" type="Texture" id=8]
-[ext_resource path="res://Theme/Lampshade.otf" type="DynamicFontData" id=9]
-[ext_resource path="res://files/temp_player.png" type="Texture" id=10]
+[ext_resource path="res://Theme/theme_white text.tres" type="Theme" id=9]
+[ext_resource path="res://files/firework/1.png" type="Texture" id=10]
+[ext_resource path="res://files/firework/2.png" type="Texture" id=11]
+[ext_resource path="res://files/firework/3.png" type="Texture" id=12]
+[ext_resource path="res://files/firework/4.png" type="Texture" id=13]
+[ext_resource path="res://files/firework/5.png" type="Texture" id=14]
+[ext_resource path="res://files/firework/6.png" type="Texture" id=15]
+[ext_resource path="res://files/firework/7.png" type="Texture" id=16]
+[ext_resource path="res://files/firework/8.png" type="Texture" id=17]
+[ext_resource path="res://files/firework/9.png" type="Texture" id=18]
+[ext_resource path="res://files/firework/10.png" type="Texture" id=19]
+[ext_resource path="res://files/firework/11.png" type="Texture" id=20]
+[ext_resource path="res://files/firework/12.png" type="Texture" id=21]
+[ext_resource path="res://files/firework/13.png" type="Texture" id=22]
+[ext_resource path="res://files/firework/14.png" type="Texture" id=23]
+[ext_resource path="res://files/firework/15.png" type="Texture" id=24]
+[ext_resource path="res://files/firework/16.png" type="Texture" id=25]
+[ext_resource path="res://Theme/Lampshade.otf" type="DynamicFontData" id=26]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=2]
 size = 32
-font_data = ExtResource( 9 )
+font_data = ExtResource( 26 )
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -32,8 +56,8 @@ margin_bottom = 40.0
 texture = ExtResource( 7 )
 
 [node name="background2" type="TextureRect" parent="ColorRect"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 800.0
+margin_bottom = 600.0
 texture = ExtResource( 8 )
 
 [node name="Highscore" type="Label" parent="ColorRect"]
@@ -46,7 +70,6 @@ margin_top = -80.0
 margin_right = 100.0
 margin_bottom = -16.0
 rect_min_size = Vector2( 200, 64 )
-text = "Highsore:"
 align = 1
 
 [node name="Lost" type="AcceptDialog" parent="ColorRect"]
@@ -58,7 +81,7 @@ margin_left = -41.5
 margin_top = -32.5
 margin_right = 41.5
 margin_bottom = 32.5
-theme = ExtResource( 1 )
+theme = ExtResource( 9 )
 dialog_text = "You lost. Try again ?"
 dialog_hide_on_ok = false
 
@@ -71,10 +94,31 @@ margin_left = -216.5
 margin_top = -44.5
 margin_right = 216.5
 margin_bottom = 44.5
+theme = ExtResource( 9 )
 window_title = ""
 dialog_text = "Congrats you Won.
 You could tweet the screenshot to
  @saridat42."
+
+[node name="AcceptDialog" type="AcceptDialog" parent="ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -32.5
+margin_right = 50.0
+margin_bottom = 32.5
+theme = ExtResource( 9 )
+dialog_text = "Reloaded"
+
+[node name="Fireworks" type="AnimatedSprite" parent="ColorRect"]
+visible = false
+position = Vector2( 631.579, 259.28 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 1 )
+frame = 14
+speed_scale = 2.0
 
 [node name="Title" type="Label" parent="."]
 margin_left = 32.0
@@ -82,7 +126,7 @@ margin_top = 32.0
 margin_right = 770.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 738, 64 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 align = 1
 
 [node name="Player" type="Control" parent="."]
@@ -96,7 +140,6 @@ margin_left = 24.0
 margin_top = 24.0
 margin_right = 344.0
 margin_bottom = 344.0
-texture = ExtResource( 10 )
 
 [node name="game" type="HBoxContainer" parent="Player"]
 margin_left = 16.0
@@ -225,5 +268,4 @@ align = 1
 valign = 1
 
 [connection signal="confirmed" from="ColorRect/Lost" to="." method="_on_Lost_confirmed"]
-[connection signal="confirmed" from="ColorRect/Won" to="." method="_on_Lost_confirmed"]
 [connection signal="button_down" from="Player/game/Roll" to="." method="_on_Roll_button_down"]

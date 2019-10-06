@@ -2,12 +2,12 @@ extends Node
 #
 enum FileNames {Main, config, SetUp, Game, Player, Boss}
 
-var path="res://files/"
-var main_path=path+"Main.txt"
-var config_path=path+"Config.cfg"
-var boss_path=path+"Boss.cfg"
-var player_path=path+"Player.cfg"
-var time_path="res://data"
+onready var path="./"
+onready var main_path=path+"README.txt"
+onready var config_path=path+"Config.cfg"
+onready var boss_path=path+"Boss.cfg"
+onready var player_path=path+"Player.cfg"
+onready var time_path="data"
 var config 
 
 var background_colors
@@ -17,11 +17,9 @@ var player_name
 var player_image
 var boss_name
 var boss_image
+var rolling=false
 
 var start_time
-
-func _ready():
-	load_config()
 	
 func load_config():
 	config= ConfigFile.new()
@@ -34,12 +32,12 @@ func load_config():
 	background_colors[0]=Color(config.get_value("config_stuff","background_color0", "#FFFFFF"))
 	background_colors[1]=Color(config.get_value("config_stuff","background_color1", "#FFFFFF"))
 	background_colors[2]=Color(config.get_value("config_stuff","background_color2", "#FFFFFF"))
-	var tmp=config.get_value("config_stuff","label_color")
-	print (tmp)
-	if(null!=tmp):
-		text_color=Color(tmp)
+	if(config.has_section_key("config_stuff","label_color")):
+		text_color=Color(config.get_value("config_stuff","label_color", "#FFFFFF"))
+	elif(background_colors==null):
+		text_color=Color.white
 	else:
-		text_color=background_colors[0]
+		text_color=background_colors[0]		
 	if(config.get_value("config_stuff","portrait",true)):
 		OS.set_window_size(Vector2(600,800))
 	else:
@@ -50,7 +48,7 @@ func set_colors(control):
 	theme.set_color("font_color","Label",text_color)
 	theme.set_color("font_color","ProgressBar",text_color)
 		
-func read_main():
+func readme():
 	var file = File.new()
 	if(!file.file_exists(main_path)):
 		return false;

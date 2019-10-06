@@ -1,16 +1,25 @@
 extends Button
 const lines=[";Sort",
 	"[config_stuff]",
-	"label_color=\"#000000\" ;text_colour=\"#FFFFFF\"",
+	"cool_color=\"#3F47CC\"",
+	"screen_width=4096 ;not working?",
+	"George_Carlin=\"The planet is fine. The people are fuckedẞ\"",
 	"hash_names=true",
 	"background_color0=\"#FFFFFF\"",
-	"background_color2=\"\"",
 	"reserved_hdd_space_for_animation=1",
-	"screen_width=4096 ;not working?",
+	"fun_generating_multiplier=0",
 	"screen_higth=4096 ;may be bugged",
 	"disallow_reload_with_F5=true",
 	"portrait=true",
-	"show_title=false"]
+	"ludum_dare_number=45",
+	"use_multicores=false",
+	"show_title=false",
+	"background_color2=\"#FFFFFF\"",
+	"foo=23",
+	"bar=420",
+	"ballmer_peak=\"disabled\"",
+	"calculation_delay=1.5",
+	"label_colour=\"#FFFFFF\""]
 
 func _on_Initilise_config_button_down():
 	var file= File.new()
@@ -20,5 +29,4 @@ func _on_Initilise_config_button_down():
 	file.open(Global.config_path,File.WRITE)
 	for line in lines:
 		file.store_line(line)
-	get_parent().show_settings()
 	file.close()
