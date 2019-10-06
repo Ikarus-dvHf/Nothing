@@ -142,8 +142,8 @@ resizable = true
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png; PNG Images" )
-current_dir = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game"
-current_path = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game/"
+current_dir = "C:/"
+current_path = "C:/"
 
 [node name="FileDialogBoss" type="FileDialog" parent="ColorRect/Menu"]
 margin_top = 24.0
@@ -155,8 +155,8 @@ resizable = true
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png; PNG Images" )
-current_dir = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game"
-current_path = "F:/Development/GODOT/Godot_Games/The-almost-finished-Game/Game/"
+current_dir = "C:/"
+current_path = "C:/"
 
 [node name="FileNotFound" type="AcceptDialog" parent="ColorRect/Menu"]
 margin_right = 429.0

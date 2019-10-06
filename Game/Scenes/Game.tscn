@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Theme/default_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://files/firework/15.png" type="Texture" id=24]
 [ext_resource path="res://files/firework/16.png" type="Texture" id=25]
 [ext_resource path="res://Theme/Lampshade.otf" type="DynamicFontData" id=26]
+[ext_resource path="res://files/temp_player.png" type="Texture" id=27]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -47,6 +48,7 @@ script = ExtResource( 2 )
 dice_images = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ]
 
 [node name="ColorRect" type="ColorRect" parent="."]
+editor/display_folded = true
 margin_right = 800.0
 margin_bottom = 600.0
 
@@ -140,8 +142,10 @@ margin_left = 24.0
 margin_top = 24.0
 margin_right = 344.0
 margin_bottom = 344.0
+texture = ExtResource( 27 )
 
 [node name="game" type="HBoxContainer" parent="Player"]
+editor/display_folded = true
 margin_left = 16.0
 margin_top = 352.0
 margin_right = 384.0
@@ -209,8 +213,10 @@ margin_left = 23.5367
 margin_top = 23.5367
 margin_right = 343.537
 margin_bottom = 343.537
+texture = ExtResource( 27 )
 
 [node name="game" type="HBoxContainer" parent="Boss"]
+editor/display_folded = true
 margin_top = 352.0
 margin_right = 368.0
 margin_bottom = 416.0

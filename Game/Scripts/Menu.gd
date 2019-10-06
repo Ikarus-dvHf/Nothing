@@ -14,6 +14,7 @@ func _ready():
 		$Control.visible = false
 		return
 	$Control.visible = true	
+	
 	Global.set_colors(self)
 	get_parent().color=Global.background_colors[0]
 	get_parent().get_node("background1").modulate=Global.background_colors[1]
@@ -38,17 +39,21 @@ func _on_Start_button_down():
 
 
 func _on_FileDialogPlayer_file_selected(path):
-	Global.player_image=Image.new()
-	Global.player_image = load(path)
-	if Global.player_image.get_width()!=256 ||  Global.player_image.get_height()!=256:
+	Global.player_image=ImageTexture.new()
+	var im =Image.new()
+	im.load(path)
+	Global.player_image.create_from_image(im)
+	if im.get_width()!=256 ||  im.get_height()!=256:
 		Global.player_image =null
 		printerr("Wrong Image size")
 		
 		
 func _on_FileDialogBoss_file_selected(path):
-	Global.boss_image=Image.new()
-	Global.boss_image = load(path)
-	if Global.boss_image.get_width()!=256 ||  Global.boss_image.get_height()!=256:
+	Global.boss_image=ImageTexture.new()
+	var im=Image.new()
+	im.load(path)
+	Global.boss_image.create_from_image(im)
+	if im.get_width()!=256 ||  im.get_height()!=256:
 		Global.boss_image =null
 		printerr("Wrong Image size")
 
